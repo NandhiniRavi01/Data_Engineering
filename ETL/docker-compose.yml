@@ -1,0 +1,32 @@
+version: '3'
+services:
+  hadoop:
+    image: bde2020/hadoop-namenode
+    container_name: hadoop
+    environment:
+      - CLUSTER_NAME=test
+    volumes:
+      - ./hadoop/dfs:/hadoop/dfs
+    ports:
+      - "9871:9870"
+      - "9000:9000"
+    networks:
+      - hadoop_network
+
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    networks:
+      - hadoop_network
+
+networks:
+  hadoop_network:
+    driver: bridge
